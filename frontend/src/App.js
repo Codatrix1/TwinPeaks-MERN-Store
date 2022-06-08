@@ -4,6 +4,8 @@ import { Container } from "react-bootstrap";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 
+import HomeScreen from "./screens/HomeScreen";
+
 //-----------------
 // React Component
 //-----------------
@@ -12,11 +14,11 @@ const App = function () {
     <React.Fragment>
       <Header />
 
-      <Container>
-        <main className="py-3">
-          <h1>Welcome to TwinPeaks</h1>
-        </main>
-      </Container>
+      <main>
+        <Container className="py-3">
+          <HomeScreen />
+        </Container>
+      </main>
 
       <Footer />
     </React.Fragment>
