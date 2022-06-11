@@ -12,19 +12,15 @@ const app = express();
 
 // Rest of the imports
 import colors from "colors";
-import products from "./data/products.js";
+
+//  Routes import
+import productRoutes from "./routes/productRoutes.js";
+
+// Set Routers
+app.use("/api/products", productRoutes);
 
 app.get("/", (req, res) => {
   res.send("API is running...........");
-});
-
-app.get("/api/products", (req, res) => {
-  res.json(products);
-});
-
-app.get("/api/products/:id", (req, res) => {
-  const product = products.find((p) => p._id === req.params.id);
-  res.json(product);
 });
 
 // Server
