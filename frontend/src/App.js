@@ -19,7 +19,7 @@ const App = function () {
       <main>
         <Container className="py-3">
           <Route exact path="/" component={HomeScreen} />
-          <Route path="/product/:id" component={ProductScreen} />
+          <Route path="/products/:id" component={ProductScreen} />
         </Container>
       </main>
 
