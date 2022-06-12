@@ -12,16 +12,24 @@ const app = express();
 
 // Rest of the imports
 import colors from "colors";
+import { notFound, errorHandler } from "./middlewares/errorMiddleware.js";
 
 //  Routes import
 import productRoutes from "./routes/productRoutes.js";
 
-// Set Routers
-app.use("/api/products", productRoutes);
-
 app.get("/", (req, res) => {
   res.send("API is running...........");
 });
+
+// Invoke Routers
+app.use("/api/products", productRoutes);
+
+//-----------------------
+// Custom Middlewares
+//-----------------------
+// Error Middlewares
+app.use(notFound);
+app.use(errorHandler);
 
 // Server
 const PORT = process.env.PORT || 5000;

@@ -21,7 +21,7 @@ router.get(
   })
 );
 
-// @ desc Fetch Single Products
+// @ desc Fetch Single Product
 // @ route GET /api/products/:id
 // @ access Public
 router.get(
@@ -32,7 +32,8 @@ router.get(
     if (product) {
       res.json(product);
     } else {
-      res.status(404).json({ message: "Product Not Found" });
+      res.status(404);
+      throw new Error("Product Not Found");
     }
   })
 );
