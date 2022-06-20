@@ -12,7 +12,7 @@ const productListReducer = (state = { products: [] }, action) => {
     return { loading: false, products: action.payload };
   }
   if (action.type === PRODUCT_LIST_FAIL) {
-    return { loading: false, error: action.error };
+    return { loading: false, error: action.payload };
   }
   // Default Fallback
   return state;
