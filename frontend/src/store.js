@@ -3,13 +3,17 @@ import thunk from "redux-thunk";
 import { composeWithDevTools } from "redux-devtools-extension";
 
 // Import Reducers
-import { productListReducer } from "./reducers/productReducers";
+import {
+  productListReducer,
+  productListDetailsReducer,
+} from "./reducers/productReducers";
 
 //----------------
 // Common Reducer
 //----------------
 const reducer = combineReducers({
   productList: productListReducer,
+  productDetails: productListDetailsReducer,
 });
 
 //----------------

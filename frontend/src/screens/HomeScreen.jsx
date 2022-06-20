@@ -1,14 +1,14 @@
 import React, { useEffect } from "react";
 import { Row, Col } from "react-bootstrap";
 
-// Redux
-import { useDispatch, useSelector } from "react-redux";
-import { listProducts } from "../actions/productActions";
-
 // import components
 import Product from "../components/Product";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
+
+// Redux
+import { useDispatch, useSelector } from "react-redux";
+import { listProducts } from "../actions/productActions";
 
 //--------------
 // React Component
@@ -17,9 +17,11 @@ const HomeScreen = () => {
   // useDispatch
   const dispatch = useDispatch();
 
+  // useSelector
   const productList = useSelector((state) => state.productList);
   const { loading, products, error } = productList;
 
+  // useEffect
   useEffect(() => {
     dispatch(listProducts());
   }, [dispatch]);
