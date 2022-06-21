@@ -1,9 +1,12 @@
-import { CART_ADD_ITEM } from "../constants/cartConstants";
+import { CART_ADD_ITEM, CART_REMOVE_ITEM } from "../constants/cartConstants";
 
 //----------------------------
-// Add To Cart Functionality
+// Cart Functionality
 //----------------------------
 const cartReducer = (state = { cartItems: [] }, action) => {
+  //-------------
+  // ADD TO CART
+  //-------------
   if (action.type === CART_ADD_ITEM) {
     const item = action.payload;
 
@@ -38,6 +41,15 @@ const cartReducer = (state = { cartItems: [] }, action) => {
     }
   }
 
+  //------------------
+  // REMOVE FROM CART
+  //------------------
+  if (action.type === CART_REMOVE_ITEM) {
+    return {
+      ...state,
+      cartItems: state.cartItems.filter((x) => x.product !== action.payload),
+    };
+  }
   // Default State
   return state;
 };
