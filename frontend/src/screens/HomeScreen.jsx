@@ -17,14 +17,14 @@ const HomeScreen = () => {
   // useDispatch
   const dispatch = useDispatch();
 
-  // useSelector
-  const productList = useSelector((state) => state.productList);
-  const { loading, products, error } = productList;
-
   // useEffect
   useEffect(() => {
     dispatch(listProducts());
   }, [dispatch]);
+
+  // useSelector
+  const productList = useSelector((state) => state.productList);
+  const { loading, products, error } = productList;
 
   return (
     <React.Fragment>

@@ -7,6 +7,7 @@ import {
   productListReducer,
   productListDetailsReducer,
 } from "./reducers/productReducers";
+import { cartReducer } from "./reducers/cartReducers";
 
 //----------------
 // Common Reducer
@@ -14,12 +15,23 @@ import {
 const reducer = combineReducers({
   productList: productListReducer,
   productDetails: productListDetailsReducer,
+  cart: cartReducer,
 });
+
+//------------------------------------
+// Getting the Data from localStorage
+//------------------------------------
+// String Parsing
+const cartItemsFromLocalStorage = localStorage.getItem("cartItems")
+  ? JSON.parse(localStorage.getItem("cartItems"))
+  : [];
 
 //----------------
 // Initial State
 //----------------
-const initialState = {};
+const initialState = {
+  cart: { cartItems: cartItemsFromLocalStorage },
+};
 
 //----------------
 // Middlewares

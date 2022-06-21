@@ -29,14 +29,14 @@ const ProductScreen = ({ match, history }) => {
   // useDispatch
   const dispatch = useDispatch();
 
-  // useSelector
-  const productDetails = useSelector((state) => state.productDetails);
-  const { loading, error, product } = productDetails;
-
   // useEffect
   useEffect(() => {
     dispatch(listProductDetails(match.params.id));
   }, [dispatch, match]);
+
+  // useSelector
+  const productDetails = useSelector((state) => state.productDetails);
+  const { loading, error, product } = productDetails;
 
   // addToCart Handler
   const addToCartHandler = () => {
