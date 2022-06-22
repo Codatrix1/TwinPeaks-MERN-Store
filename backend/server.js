@@ -16,6 +16,10 @@ import { notFound, errorHandler } from "./middlewares/errorMiddleware.js";
 
 //  Routes import
 import productRoutes from "./routes/productRoutes.js";
+import userRoutes from "./routes/userRoutes.js";
+
+// Body parser: limiting data reading from body into req.body
+app.use(express.json({ limit: "10kb" }));
 
 app.get("/", (req, res) => {
   res.send("API is running...........");
@@ -23,10 +27,12 @@ app.get("/", (req, res) => {
 
 // Invoke Routers
 app.use("/api/products", productRoutes);
+app.use("/api/users", userRoutes);
 
-//-----------------------
-// Custom Middlewares
-//-----------------------
+//-------------------
+// MIDDLEWARE STACK
+//------------------
+
 // Error Middlewares
 app.use(notFound);
 app.use(errorHandler);

@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 //------------------
 // Define a schema
@@ -32,6 +33,14 @@ const UserSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+//----------------------------------------------------------------------------
+// Comparing hashed password in DB to entered password for Authentication w/ Instance Method
+//--------------------------------------------------------------------------
+UserSchema.methods.comparePassword = async function (candidatePassword) {
+  const isMatch = await bcrypt.compare(candidatePassword, this.password);
+  return isMatch;
+};
 
 //----------------------------
 // Create and export model
