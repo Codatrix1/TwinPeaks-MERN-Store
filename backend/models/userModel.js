@@ -34,6 +34,21 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
+//------------------------------------------------
+// Encrypting and Hashing password using bcryptjs
+//------------------------------------------------
+// IMP INFO: next() is NOT REQUIRED in latest Mongoose package Version 6: From the Docs
+UserSchema.pre("save", async function (next) {
+  // conditional execution: if password is NOT MODIFIED - DO NOT RUN ENCRYPTION and run next() immediately and skip rest of the code
+  if (!this.isModified("password")) {
+    next();
+  }
+
+  const salt = await bcrypt.genSalt(12);
+  this.password = await bcrypt.hash(this.password, salt);
+  next();
+});
+
 //----------------------------------------------------------------------------
 // Comparing hashed password in DB to entered password for Authentication w/ Instance Method
 //--------------------------------------------------------------------------
