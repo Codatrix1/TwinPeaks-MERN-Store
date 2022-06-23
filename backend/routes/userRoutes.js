@@ -7,6 +7,7 @@ import {
   login,
   registerUser,
   getUserProfile,
+  updateUserProfile,
 } from "../controllers/userController.js";
 
 // Auth Middlewares
@@ -17,7 +18,10 @@ import { protect } from "../middlewares/authMiddleware.js";
 //---------------
 router.route("/").post(registerUser);
 router.route("/login").post(login);
-router.route("/profile").get(protect, getUserProfile);
+router
+  .route("/profile")
+  .get(protect, getUserProfile)
+  .put(protect, updateUserProfile);
 
 //---------------
 // Export router
