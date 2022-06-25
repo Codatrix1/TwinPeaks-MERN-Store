@@ -7,7 +7,8 @@ import Loader from "../components/Loader";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
-import { getUserDetails } from "../actions/userActions";
+import { getUserDetails, updateUserProfile } from "../actions/userActions";
+import { USER_UPDATE_PROFILE_RESET } from "../constants/userConstants";
 
 //-----------------
 // React Component
@@ -18,6 +19,7 @@ const ProfileScreen = ({ location, history }) => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [message, setMessage] = useState(null);
+  const [profileUpdated, setProfileUpdated] = useState(null);
 
   // useDispatch
   const dispatch = useDispatch();
@@ -30,30 +32,64 @@ const ProfileScreen = ({ location, history }) => {
   const userLogin = useSelector((state) => state.userLogin);
   const { userInfo } = userLogin;
 
+  // useSelector: To get the update success value
+  const userUpdateProfile = useSelector((state) => state.userUpdateProfile);
+  const { success } = userUpdateProfile;
+
+  // useEffect
+  // useEffect(() => {
+  //   if (!userInfo) {
+  //     history.push("/login");
+  //   } else {
+  //     if (!user || !user.name || success) {
+  //       dispatch({ type: USER_UPDATE_PROFILE_RESET });
+  //       dispatch(getUserDetails("profile"));
+  //     } else {
+  //       setName(user.name);
+  //       setEmail(user.email);
+  //     }
+  //   }
+  // }, [dispatch, history, userInfo, user, success]);
+
   // useEffect
   useEffect(() => {
     if (!userInfo) {
       history.push("/login");
-    } else {
-      if (!user.name) {
-        dispatch(getUserDetails("profile"));
-      } else {
-        setName(user.name);
-        setEmail(user.email);
-      }
+      return;
     }
-  }, [dispatch, history, userInfo, user]);
+
+    if (!user || !user.name) {
+      dispatch(getUserDetails("profile"));
+      return;
+    }
+
+    if (success) {
+      dispatch({ type: USER_UPDATE_PROFILE_RESET });
+      dispatch(getUserDetails("profile"));
+      setProfileUpdated(true);
+      return;
+    }
+
+    setName(user.name);
+    setEmail(user.email);
+  }, [dispatch, history, userInfo, user, success]);
 
   // Form Submit Handler
   const submitHandler = (e) => {
     e.preventDefault();
 
+    // get rid of previous messages
+    setProfileUpdated(false);
+    setMessage(null);
+
     // DISPATCH REGISTER: Conditionally
     if (password !== confirmPassword) {
       setMessage("Passwords do not match");
-    } else {
-      // DISPATCH UPDATE PROFILE
+      return;
     }
+
+    // DISPATCH UPDATE PROFILE
+    dispatch(updateUserProfile({ id: user._id, name, email, password }));
   };
 
   return (
@@ -62,6 +98,7 @@ const ProfileScreen = ({ location, history }) => {
         <h2>User Profile</h2>
         {message && <Message variant="danger">{message}</Message>}
         {error && <Message variant="danger">{error}</Message>}
+        {profileUpdated && <Message variant="success">Profile Updated</Message>}
         {loading && <Loader />}
 
         <Form onSubmit={submitHandler}>

@@ -11,6 +11,10 @@ import {
   USER_REGISTER_REQUEST,
   USER_REGISTER_SUCCESS,
   USER_DETAILS_RESET,
+  USER_UPDATE_PROFILE_REQUEST,
+  USER_UPDATE_PROFILE_SUCCESS,
+  USER_UPDATE_PROFILE_FAIL,
+  USER_UPDATE_PROFILE_RESET,
 } from "../constants/userConstants";
 
 //------------------
@@ -62,6 +66,7 @@ const login = (email, password) => async (dispatch) => {
 const logout = () => (dispatch) => {
   localStorage.removeItem("userInfo");
   dispatch({ type: USER_DETAILS_RESET });
+  dispatch({ type: USER_UPDATE_PROFILE_RESET });
   dispatch({ type: USER_LOGOUT });
 };
 
@@ -147,7 +152,53 @@ const getUserDetails = (id) => async (dispatch, getState) => {
   }
 };
 
+//-----------------------------
+// Update User Profile Action
+//-----------------------------
+const updateUserProfile = (user) => async (dispatch, getState) => {
+  try {
+    dispatch({
+      type: USER_UPDATE_PROFILE_REQUEST,
+    });
+
+    const {
+      userLogin: { userInfo },
+    } = getState();
+
+    const config = {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${userInfo.token}`,
+      },
+    };
+
+    const { data } = await axios.put(`/api/users/profile`, user, config);
+
+    dispatch({
+      type: USER_UPDATE_PROFILE_SUCCESS,
+      payload: data,
+    });
+
+    // To update the user data and display in real time as we update
+    dispatch({
+      type: USER_LOGIN_SUCCESS,
+      payload: data,
+    });
+
+    // To update the localStorage as per the updated data
+    localStorage.setItem("userInfo", JSON.stringify(data));
+  } catch (error) {
+    dispatch({
+      type: USER_UPDATE_PROFILE_FAIL,
+      payload:
+        error.response && error.response.data.message
+          ? error.response.data.message
+          : error.message,
+    });
+  }
+};
+
 //--------------
 // Named Export
 //--------------
-export { login, logout, register, getUserDetails };
+export { login, logout, register, getUserDetails, updateUserProfile };

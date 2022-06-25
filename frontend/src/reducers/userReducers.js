@@ -10,6 +10,10 @@ import {
   USER_DETAILS_SUCCESS,
   USER_DETAILS_FAIL,
   USER_DETAILS_RESET,
+  USER_UPDATE_PROFILE_REQUEST,
+  USER_UPDATE_PROFILE_SUCCESS,
+  USER_UPDATE_PROFILE_FAIL,
+  USER_UPDATE_PROFILE_RESET,
 } from "../constants/userConstants";
 
 //--------------------
@@ -50,9 +54,9 @@ const userRegisterReducer = (state = {}, action) => {
   return state;
 };
 
-//--------------------
+//-----------------------
 // User Details Reducer
-//--------------------
+//-----------------------
 const userDetailsReducer = (state = { user: {} }, action) => {
   if (action.type === USER_DETAILS_REQUEST) {
     return { ...state, loading: true };
@@ -71,7 +75,33 @@ const userDetailsReducer = (state = { user: {} }, action) => {
   return state;
 };
 
+//----------------------------
+// User Update Profile Reducer
+//----------------------------
+const userUpdateProfileReducer = (state = {}, action) => {
+  if (action.type === USER_UPDATE_PROFILE_REQUEST) {
+    return { loading: true };
+  }
+  if (action.type === USER_UPDATE_PROFILE_SUCCESS) {
+    return { loading: false, success: true, userInfo: action.payload };
+  }
+  if (action.type === USER_UPDATE_PROFILE_FAIL) {
+    return { loading: false, error: action.payload };
+  }
+  if (action.type === USER_UPDATE_PROFILE_RESET) {
+    return {};
+  }
+
+  // Default Fallback
+  return state;
+};
+
 //----------------
 // Export: Named
 //----------------
-export { userLoginReducer, userRegisterReducer, userDetailsReducer };
+export {
+  userLoginReducer,
+  userRegisterReducer,
+  userDetailsReducer,
+  userUpdateProfileReducer,
+};
