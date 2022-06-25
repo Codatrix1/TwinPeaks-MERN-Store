@@ -1,9 +1,16 @@
-import { CART_ADD_ITEM, CART_REMOVE_ITEM } from "../constants/cartConstants";
+import {
+  CART_ADD_ITEM,
+  CART_REMOVE_ITEM,
+  CART_SAVE_SHIPPING_ADDRESS,
+} from "../constants/cartConstants";
 
 //----------------------------
 // Cart Functionality
 //----------------------------
-const cartReducer = (state = { cartItems: [] }, action) => {
+const cartReducer = (
+  state = { cartItems: [], shippingAddress: {} },
+  action
+) => {
   //-------------
   // ADD TO CART
   //-------------
@@ -50,7 +57,20 @@ const cartReducer = (state = { cartItems: [] }, action) => {
       cartItems: state.cartItems.filter((x) => x.product !== action.payload),
     };
   }
+
+  //----------------------------
+  // CART SAVE SHIPPING ADDRESS
+  //----------------------------
+  if (action.type === CART_SAVE_SHIPPING_ADDRESS) {
+    return {
+      ...state,
+      shippingAddress: action.payload,
+    };
+  }
+
+  //----------------
   // Default State
+  //----------------
   return state;
 };
 

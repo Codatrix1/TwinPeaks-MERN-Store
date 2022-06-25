@@ -1,9 +1,17 @@
 import axios from "axios";
-import { CART_ADD_ITEM, CART_REMOVE_ITEM } from "../constants/cartConstants";
+import {
+  CART_ADD_ITEM,
+  CART_REMOVE_ITEM,
+  CART_SAVE_SHIPPING_ADDRESS,
+} from "../constants/cartConstants";
 
 //------------------
 // Action Creators
 //-----------------
+
+//--------------------
+// Add to Cart Action
+//--------------------
 const addToCart = (id, qty) => async (dispatch, getState) => {
   const { data } = await axios.get(`/api/products/${id}`);
 
@@ -23,6 +31,9 @@ const addToCart = (id, qty) => async (dispatch, getState) => {
   localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
 };
 
+//------------------------
+// Remove from Cart Action
+//-------------------------
 const removeFromCart = (id) => (dispatch, getState) => {
   dispatch({
     type: CART_REMOVE_ITEM,
@@ -33,7 +44,20 @@ const removeFromCart = (id) => (dispatch, getState) => {
   localStorage.setItem("cartItems", JSON.stringify(getState().cart.cartItems));
 };
 
+//-----------------------------
+// Save Shipping Address Action
+//-----------------------------
+const saveShippingAddress = (data) => (dispatch) => {
+  dispatch({
+    type: CART_SAVE_SHIPPING_ADDRESS,
+    payload: data,
+  });
+
+  // Setting the Data to localStorage
+  localStorage.setItem("shippingAddress", JSON.stringify(data));
+};
+
 //---------------
 // Export: Named
 //---------------
-export { addToCart, removeFromCart };
+export { addToCart, removeFromCart, saveShippingAddress };
