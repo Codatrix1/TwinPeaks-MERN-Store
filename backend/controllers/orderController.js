@@ -1,5 +1,6 @@
 import asyncHandler from "express-async-handler";
 import Order from "../models/orderModel.js";
+import Product from "../models/productModel.js";
 
 // @ desc Create new order
 // @ route POST /api/orders
@@ -30,6 +31,34 @@ const createOrder = asyncHandler(async (req, res) => {
       shippingPrice,
       totalPrice,
     });
+
+    //////////////////// SECURITY BUG: GET IT FIXED
+
+    // var current=JSON.parse(localStorage.getItem("cartItems"))
+    // current[0].price = 0.01
+    // ...
+    // localStorage.setItem("cartItems", JSON.stringify(current))
+
+    //--------------------------------------
+
+    // for (const item of order.orderItems) {
+    //   const product = await Product.findOne({ _id: item.product });
+
+    //   item.price = product.price;
+    // }
+
+    //---------------------------------------------
+    // orderItems.forEach(async (item) => {
+    //   console.log(item);
+    //   let lookupItem = await Product.findById(item.product);
+    //   console.log(lookupItem);
+    //   if (item.price !== lookupItem.price) {
+    //     res.status(400);
+    //     throw new Error(
+    //       "There is a discrepancy between the prices of the items, and whats in the Database, please try again"
+    //     );
+    //   }
+    // });
 
     const createdOrder = await order.save();
 
