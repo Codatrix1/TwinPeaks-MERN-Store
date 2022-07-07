@@ -83,8 +83,8 @@ const getOrderById = asyncHandler(async (req, res) => {
   }
 });
 
-// @ desc Get Order by Id and Update it to paid
-// @ route GET /api/orders/:id/pay
+// @ desc Update an order to paid
+// @ route PUT /api/orders/:id/pay
 // @ access Private
 const updateOrderToPaid = asyncHandler(async (req, res) => {
   const order = await Order.findById(req.params.id);

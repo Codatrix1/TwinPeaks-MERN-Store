@@ -1,10 +1,14 @@
 import {
-  ORDER_CREATE_FAIL,
   ORDER_CREATE_REQUEST,
   ORDER_CREATE_SUCCESS,
-  ORDER_DETAILS_FAIL,
+  ORDER_CREATE_FAIL,
   ORDER_DETAILS_REQUEST,
   ORDER_DETAILS_SUCCESS,
+  ORDER_DETAILS_FAIL,
+  ORDER_PAY_REQUEST,
+  ORDER_PAY_SUCCESS,
+  ORDER_PAY_FAIL,
+  ORDER_PAY_RESET,
 } from "../constants/orderConstants";
 
 //----------------------------
@@ -21,7 +25,6 @@ const orderCreateReducer = (state = {}, action) => {
     return {
       loading: false,
       success: true,
-      order: action.payload,
     };
   }
 
@@ -69,7 +72,38 @@ const orderDetailsReducer = (
   return state;
 };
 
+const orderPayReducer = (state = {}, action) => {
+  if (action.type === ORDER_PAY_REQUEST) {
+    return {
+      loading: true,
+    };
+  }
+
+  if (action.type === ORDER_PAY_SUCCESS) {
+    return {
+      loading: false,
+      success: true,
+    };
+  }
+
+  if (action.type === ORDER_PAY_FAIL) {
+    return {
+      loading: false,
+      error: action.payload,
+    };
+  }
+
+  if (action.type === ORDER_PAY_RESET) {
+    return {};
+  }
+
+  //----------------
+  // Default State
+  //----------------
+  return state;
+};
+
 //----------------
 // Export: Named
 //----------------
-export { orderCreateReducer, orderDetailsReducer };
+export { orderCreateReducer, orderDetailsReducer, orderPayReducer };
